@@ -34,21 +34,49 @@ export async function updateSession(request: NextRequest) {
   // issues with users being randomly logged out.
 
   // IMPORTANT: DO NOT REMOVE auth.getUser()
-
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (
-    !user &&
-    !request.nextUrl.pathname.startsWith("/login") &&
-    !request.nextUrl.pathname.startsWith("/signup") &&
-    !request.nextUrl.pathname.startsWith("/error")
-  ) {
-    // no user, potentially respond by redirecting the user to the login page
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
+  const { pathname } = request.nextUrl;
+
+  // Define route categories
+  const publicRoutes = ["/login", "/signup"];
+  const protectedRoutes = ["/dashboard"];
+  const unrestrictedRoutes = ["/error", "/", "/about", "/contact"]; // Add other public pages as needed
+
+  // Check route types
+  const isPublicRoute = publicRoutes.some(
+    (route) => pathname === route || pathname.startsWith(route)
+  );
+  const isProtectedRoute = protectedRoutes.some(
+    (route) => pathname === route || pathname.startsWith(route)
+  );
+  const isUnrestrictedRoute = unrestrictedRoutes.some(
+    (route) => pathname === route || pathname.startsWith(route)
+  );
+
+  // Handle authentication redirects
+  if (!user && isProtectedRoute) {
+    // No user trying to access protected route - redirect to login
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = "/login";
+    redirectUrl.searchParams.set("redirectTo", pathname);
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (user && isPublicRoute) {
+    // Authenticated user trying to access public auth routes - redirect to dashboard
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = "/dashboard";
+    return NextResponse.redirect(redirectUrl);
+  }
+
+  if (!user && !isPublicRoute && !isUnrestrictedRoute) {
+    // No user trying to access unknown route - redirect to login
+    const redirectUrl = request.nextUrl.clone();
+    redirectUrl.pathname = "/login";
+    return NextResponse.redirect(redirectUrl);
   }
 
   // IMPORTANT: You *must* return the supabaseResponse object as it is.
