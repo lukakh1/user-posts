@@ -7,7 +7,7 @@ export async function signInWithEmail({
   email: string;
   password: string;
 }) {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data: successData, error } = await supabase.auth.signInWithPassword({
     email: email,
     password: password,

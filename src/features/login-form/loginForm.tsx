@@ -3,15 +3,25 @@ import { LoginInputs, LoginSchema } from "@/entities/models/login/loginSchema";
 import { signInWithEmail } from "@/shared/api/auth-actions";
 import Button from "@/shared/ui/Button";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 export default function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const mutation = useMutation({
+    mutationFn: signInWithEmail,
+    onSuccess: () => {
+      router.push(searchParams.get("redirectTo") || "/");
+    },
+  });
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginInputs>({ resolver: zodResolver(LoginSchema) });
-  const onSubmit: SubmitHandler<LoginInputs> = (data) => signInWithEmail(data);
+  const onSubmit: SubmitHandler<LoginInputs> = (data) => mutation.mutate(data);
 
   return (
     <form
