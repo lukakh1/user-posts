@@ -28,18 +28,17 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log("MIDDLEWARE", { pathname, user });
-
   const protectedRoute = "/dashboard";
   const publicRoutes = ["/login", "/signup"];
 
   const isProtectedRoute =
-    pathname === protectedRoute || pathname.startsWith(protectedRoute + "/");
+    pathname === protectedRoute || pathname.startsWith(protectedRoute);
   const isPublicRoute = publicRoutes.some(
-    (route) => pathname === route || pathname.startsWith(route + "/")
+    (route) => pathname === route || pathname.startsWith(route)
   );
 
   if (!user && isProtectedRoute) {
+    console.log("No user, redirecting to login");
     const redirectUrl = new URL("/login", request.url);
     redirectUrl.searchParams.set("redirectTo", pathname);
     return NextResponse.redirect(redirectUrl);
