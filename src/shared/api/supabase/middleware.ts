@@ -1,51 +1,28 @@
-import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { createClient } from "./server";
 
 export async function updateSession(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
+  const supabaseResponse = NextResponse.next({
     request,
   });
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) =>
-            request.cookies.set(name, value)
-          );
-          supabaseResponse = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          );
-        },
-      },
-    }
-  );
+  const supabase = await createClient();
 
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
+  console.log(user, "userrrrr");
+
   const { pathname } = request.nextUrl;
 
-  const publicRoutes = ["/login", "/signup"];
+  const publicRoutes = ["/login", "/signup", "/api"];
   const protectedRoutes = ["/dashboard"];
-  const unrestrictedRoutes = ["/error", "/", "/about", "/contact"]; // Add other public pages as needed
 
   const isPublicRoute = publicRoutes.some(
     (route) => pathname === route || pathname.startsWith(route)
   );
   const isProtectedRoute = protectedRoutes.some(
-    (route) => pathname === route || pathname.startsWith(route)
-  );
-  const isUnrestrictedRoute = unrestrictedRoutes.some(
     (route) => pathname === route || pathname.startsWith(route)
   );
 
@@ -59,12 +36,6 @@ export async function updateSession(request: NextRequest) {
   if (user && isPublicRoute) {
     const redirectUrl = request.nextUrl.clone();
     redirectUrl.pathname = "/dashboard";
-    return NextResponse.redirect(redirectUrl);
-  }
-
-  if (!user && !isPublicRoute && !isUnrestrictedRoute) {
-    const redirectUrl = request.nextUrl.clone();
-    redirectUrl.pathname = "/login";
     return NextResponse.redirect(redirectUrl);
   }
 
