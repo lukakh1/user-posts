@@ -15,9 +15,10 @@ export async function signInWithEmail({
     password: password,
   });
   if (error) {
-    throw error;
+    return { success: false, error: error.message };
   }
-  return successData;
+
+  return { success: true, data: successData };
 }
 
 export async function signUpNewUser({
@@ -33,9 +34,10 @@ export async function signUpNewUser({
     password,
   });
   if (error) {
-    throw error;
+    return { success: false, error: error.message };
   }
-  return data;
+
+  return { success: true, data: data };
 }
 
 export async function signInWithGmail() {
@@ -49,9 +51,9 @@ export async function signInWithGmail() {
   });
 
   if (error) {
-    console.error("OAuth initiation error:", error);
-    redirect("/auth/auth-code-error?error=oauth_init_failed");
+    return { success: false, error: error.message };
   }
+
   if (data.url) {
     redirect(data.url);
   }

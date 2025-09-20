@@ -1,19 +1,21 @@
 type ButtonProps = {
   children: React.ReactNode;
   size: "small" | "medium" | "large";
-  onClick: () => void;
+  onClick?: () => void;
   color?: "primary" | "submit" | "error";
   type?: "button" | "submit" | "reset";
   className?: string;
+  disabled: boolean;
 };
 
 export default function Button({
   children,
   size,
-  onClick,
   color = "primary",
   type = "button",
   className,
+  disabled = false,
+  onClick,
 }: ButtonProps) {
   const sizeClasses = {
     small: "px-2 py-1 text-sm",
@@ -29,9 +31,10 @@ export default function Button({
 
   return (
     <button
+      disabled={disabled}
       type={`${type}`}
       className={`rounded ${sizeClasses[size]} ${colorClasses[color]} ${className} cursor-pointer`}
-      onClick={onClick}
+      onClick={onClick ? onClick : () => {}}
     >
       {children}
     </button>
