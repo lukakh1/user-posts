@@ -1,6 +1,6 @@
 import SignupForm from "@/features/signup-form/signupForm";
+import CustomLink from "@/shared/ui/CustomLink";
 import H1 from "@/shared/ui/H1";
-import Link from "next/link";
 
 export default function SignupPage() {
   return (
@@ -17,12 +17,14 @@ export default function SignupPage() {
           <div className="text-center mt-4 p-4 rounded-2xl bg-slate-700">
             <p className="text-slate-300">
               Already have an account?{" "}
-              <Link
+              <CustomLink
                 href="/login"
-                className="text-green-300 hover:text-green-200 font-medium underline transition-colors"
+                color="accent"
+                variant="outline"
+                className="transition-colors"
               >
                 Sign in here
-              </Link>
+              </CustomLink>
             </p>
           </div>
         </div>

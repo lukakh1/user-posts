@@ -1,4 +1,4 @@
-import Link from "next/link";
+import CustomLink from "@/shared/ui/CustomLink";
 
 export default function HeroSection() {
   return (
@@ -19,18 +19,23 @@ export default function HeroSection() {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link
-            href={"/signup"}
-            className="px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl text-lg font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 min-w-48"
+          <CustomLink
+            href="/signup"
+            variant="solid"
+            size="large"
+            className="bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-semibold hover:shadow-xl transform hover:scale-105 transition-all duration-300 min-w-48"
           >
             Get Started Free
-          </Link>
-          <Link
-            href={"/login"}
-            className="px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl text-lg font-semibold hover:border-purple-400 hover:text-purple-600 transition-all duration-200 min-w-48"
+          </CustomLink>
+          <CustomLink
+            color="secondary"
+            href="/login"
+            variant="outline"
+            size="large"
+            className="border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-purple-400 hover:text-purple-600 transition-all duration-200 min-w-48"
           >
             Already have an account?
-          </Link>
+          </CustomLink>
         </div>
       </div>
     </section>

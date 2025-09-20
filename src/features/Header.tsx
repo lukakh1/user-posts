@@ -1,6 +1,6 @@
 import { getPublicUser } from "@/shared/api/user-actions";
+import CustomLink from "@/shared/ui/CustomLink";
 import { Icon } from "@iconify/react";
-import Link from "next/link";
 
 export default async function Header() {
   const user = await getPublicUser();
@@ -39,6 +39,7 @@ export default async function Header() {
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
+          {/* Logo Section */}
           <div className="flex items-center">
             <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-2 rounded-lg">
               <Icon icon="mdi:account-group" className="h-8 w-8 text-white" />
@@ -48,40 +49,53 @@ export default async function Header() {
             </span>
           </div>
 
+          {/* Guest User Navigation */}
           {!user && (
             <div className="flex items-center space-x-4">
-              <Link
-                href={"/login"}
-                className="px-6 py-2 text-gray-600 hover:text-purple-600 font-medium transition-colors duration-200"
+              <CustomLink
+                href="/login"
+                variant="ghost"
+                color="primary"
+                size="medium"
+                className="text-gray-600 hover:text-purple-600 font-medium"
               >
                 Sign In
-              </Link>
-              <Link
-                href={"/signup"}
-                className="px-6 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-medium"
+              </CustomLink>
+              <CustomLink
+                href="/signup"
+                variant="solid"
+                color="primary"
+                size="medium"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg transform hover:scale-105 font-medium"
               >
                 Sign Up
-              </Link>
+              </CustomLink>
             </div>
           )}
 
+          {/* Authenticated User Navigation */}
           {user && (
             <div className="flex items-center space-x-2">
-              <Link
-                href={"/profile"}
-                className="text-slate-700 px-4 py-1 rounded-4xl border border-purple-200 bg-purple-300 uppercase font-bold flex flex-col items-center hover:bg-purple-400 hover:text-white transition-all duration-200"
+              <CustomLink
+                href="/profile"
+                variant="solid"
+                size="medium"
+                className="uppercase font-bold flex flex-col items-center"
               >
                 {userDisplayInfo?.showName && (
-                  <span className="">Hello, {userDisplayInfo.displayName}</span>
+                  <span>Hello, {userDisplayInfo.displayName}</span>
                 )}
                 <span className="text-xs">Go to Profile</span>
-              </Link>
-              <Link
-                href={"/dashboard"}
-                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg hover:shadow-lg transform hover:scale-105 transition-all duration-200 font-medium"
+              </CustomLink>
+              <CustomLink
+                href="/dashboard"
+                variant="solid"
+                color="primary"
+                size="medium"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg transform hover:scale-105 font-medium"
               >
                 Go to Dashboard
-              </Link>
+              </CustomLink>
             </div>
           )}
         </div>

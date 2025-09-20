@@ -13,7 +13,7 @@ export const getUser = cache(async () => {
     if (error) throw error;
     return user;
   } catch (error) {
-    throw error;
+    return null;
   }
 });
 
