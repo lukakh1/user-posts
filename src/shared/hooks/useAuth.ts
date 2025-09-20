@@ -47,7 +47,6 @@ export const useAuth = () => {
   }
 
   function handleError(error: { message: string }) {
-    console.log(error);
     setErrorMessage(
       error.message || "Authentication failed. Please try again."
     );
