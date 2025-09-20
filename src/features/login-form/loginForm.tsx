@@ -26,15 +26,17 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col gap-y-2 border border-slate-100 rounded-3xl p-8 bg-slate-600"
+      className="flex flex-col gap-y-4 border border-slate-100 rounded-3xl p-8 bg-slate-600 shadow-lg"
     >
       {errorMessage && (
-        <div className="text-red-300 text-center mb-4">{errorMessage}</div>
+        <div className="text-red-300 text-center mb-2 p-3 bg-red-900/20 rounded-lg border border-red-800">
+          {errorMessage}
+        </div>
       )}
 
       <Button
         type="button"
-        className="w-full mb-4 flex items-center justify-center gap-2"
+        className="w-full mb-2 flex items-center justify-center gap-2 hover:bg-slate-400 transition-colors"
         onClick={handleGmailLogin}
         color="primary"
         size="large"
@@ -44,41 +46,55 @@ export default function LoginForm() {
         Continue with Google
       </Button>
 
-      <label htmlFor="email" className="text-slate-200">
-        Email
-      </label>
-      <input
-        id="email"
-        className="px-4 py-2 rounded-lg bg-slate-800 text-slate-100 focus:outline-none"
-        placeholder="jonjones@gmail.com"
-        type="email"
-        {...register("email", { required: true })}
-      />
-      {errors.email && (
-        <span className="text-red-300">This field is required</span>
-      )}
+      <div className="flex items-center gap-4 my-2">
+        <div className="flex-1 h-px bg-slate-400"></div>
+        <span className="text-slate-300 text-sm">or</span>
+        <div className="flex-1 h-px bg-slate-400"></div>
+      </div>
 
-      <label htmlFor="password" className="text-slate-200">
-        Password
-      </label>
-      <input
-        id="password"
-        className="px-4 py-2 rounded-lg bg-slate-800 text-slate-100 focus:outline-none"
-        type="password"
-        {...register("password", { required: true })}
-      />
-      {errors.password && (
-        <span className="text-red-300">{errors.password.message}</span>
-      )}
+      <div className="space-y-1">
+        <label htmlFor="email" className="text-slate-200 font-medium">
+          Email
+        </label>
+        <input
+          id="email"
+          className="w-full px-4 py-3 rounded-lg bg-slate-800 text-slate-100 border border-slate-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
+          placeholder="jonjones@gmail.com"
+          type="email"
+          {...register("email", { required: true })}
+        />
+        {errors.email && (
+          <span className="text-red-300 text-sm block mt-1">
+            This field is required
+          </span>
+        )}
+      </div>
+
+      <div className="space-y-1">
+        <label htmlFor="password" className="text-slate-200 font-medium">
+          Password
+        </label>
+        <input
+          id="password"
+          className="w-full px-4 py-3 rounded-lg bg-slate-800 text-slate-100 border border-slate-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
+          type="password"
+          {...register("password", { required: true })}
+        />
+        {errors.password && (
+          <span className="text-red-300 text-sm block mt-1">
+            {errors.password.message}
+          </span>
+        )}
+      </div>
 
       <Button
-        className="w-1/2 mx-auto my-4"
+        className="w-full mt-6 hover:bg-blue-300 transition-colors"
         type="submit"
         size="large"
         color="submit"
         disabled={isLoading}
       >
-        <p>{isLoading ? "Signing In..." : "Sign In"}</p>
+        {isLoading ? "Signing In..." : "Sign In"}
       </Button>
     </form>
   );

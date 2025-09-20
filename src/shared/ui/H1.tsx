@@ -6,6 +6,10 @@ export default function H1({
   color: string;
 }) {
   return (
-    <h1 className={`text-3xl font-bold my-4 text-${color}-400`}>{children}</h1>
+    <h1
+      className={`text-6xl font-bold my-6 ${color} text-center tracking-tight font-serif`}
+    >
+      {children}
+    </h1>
   );
 }
