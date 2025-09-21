@@ -4,7 +4,7 @@ import FeaturesSection from "@/features/home-page/FeaturesSection";
 import CallToActionSection from "@/features/home-page/CallToActionSection";
 import Header from "@/features/Header";
 import Footer from "@/features/Footer";
-import { getPublicUser } from "@/shared/api/user-actions";
+import { getPublicUser } from "@/entities/api/user-actions";
 import SubscriptionAd from "@/features/home-page/SubscriptionAd";
 
 export default async function LandingPage() {

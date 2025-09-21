@@ -6,7 +6,7 @@ import {
   signInWithEmail,
   signInWithGmail,
   signUpNewUser,
-} from "@/shared/api/auth-actions";
+} from "@/entities/api/auth-actions";
 import type { LoginInputs } from "@/entities/models/login/loginSchema";
 import type { SignupInputs } from "@/entities/models/signup/signupSchema";
 

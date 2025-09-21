@@ -1,5 +1,5 @@
 import { PublicUser } from "@/entities/models/public-user/publicUserSchem";
-import { getPublicUser } from "@/shared/api/user-actions";
+import { getPublicUser } from "@/entities/api/user-actions";
 import CustomLink from "@/shared/ui/CustomLink";
 import { Icon } from "@iconify/react";
 

@@ -1,5 +1,5 @@
 "use server";
-import { createClient } from "./supabase/server";
+import { createClient } from "@/shared/api/supabase/server";
 import { cache } from "react";
 
 const getUser = cache(async () => {

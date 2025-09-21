@@ -1,6 +1,6 @@
 "use server";
+import { createClient } from "@/shared/api/supabase/server";
 import { redirect } from "next/navigation";
-import { createClient } from "./supabase/server";
 
 export async function signInWithEmail({
   email,
