@@ -7,30 +7,32 @@ import {
   useLikePost,
   useUnlikePost,
 } from "@/shared/hooks/usePosts";
-
-const formatDate = (date: Date) => {
-  const dateObj = new Date(date);
-  return new Intl.DateTimeFormat("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  }).format(dateObj);
-};
+import useSavedPostIds from "../store/savedPosts.store";
 
 export default function PostCard({ post }: { post: Post }) {
+  const formatDate = (date: Date) => {
+    const dateObj = new Date(date);
+    return new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(dateObj);
+  };
+
   const { data: likeStatus, isLoading: isLikeStatusLoading } = useIsLiked(
     post.id
   );
   const likeMutation = useLikePost();
   const unlikeMutation = useUnlikePost();
 
-  const liked = likeStatus?.liked || false;
+  const { togglePostSaved, isPostSaved, isHydrated } = useSavedPostIds();
+
   const isLoading = likeMutation.isPending || unlikeMutation.isPending;
 
   function handleLike() {
     if (isLoading || isLikeStatusLoading) return;
 
-    if (liked) {
+    if (likeStatus?.liked || false) {
       unlikeMutation.mutate(post.id);
     } else {
       likeMutation.mutate(post.id);
@@ -98,24 +100,40 @@ export default function PostCard({ post }: { post: Post }) {
             size="small"
             disabled={isLoading}
             className={`flex items-center space-x-1 transition-colors hover:scale-105 ${
-              liked ? "text-red-500" : "text-gray-500 hover:text-red-500"
+              likeStatus?.liked || false
+                ? "text-red-500"
+                : "text-gray-500 hover:text-red-500"
             } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
             <Icon
-              icon={liked ? "mdi:heart" : "mdi:heart-outline"}
+              icon={
+                likeStatus?.liked || false ? "mdi:heart" : "mdi:heart-outline"
+              }
               className="text-sm"
+              fill={likeStatus?.liked || false ? "red" : "none"}
             />
             <span className="text-xs font-medium">{post.likes}</span>
           </Button>
         </div>
 
         <Button
+          onClick={() => isHydrated && togglePostSaved(post.id)}
           color="submit"
           size="small"
-          className="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors hover:scale-105"
+          className={`flex items-center space-x-1 transition-colors hover:scale-105 ${
+            isHydrated && isPostSaved(post.id)
+              ? "text-blue-500 hover:text-blue-600"
+              : "text-gray-500 hover:text-blue-500"
+          }`}
         >
-          {" "}
-          <Icon icon="mdi:bookmark-outline" className="text-sm" />
+          <Icon
+            icon={
+              isHydrated && isPostSaved(post.id)
+                ? "mdi:bookmark"
+                : "mdi:bookmark-outline"
+            }
+            className="text-sm"
+          />
         </Button>
       </div>
     </div>
