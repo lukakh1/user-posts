@@ -1,6 +1,9 @@
+"use client";
 import { Post } from "@/entities/models/post/postSchema";
 import { Icon } from "@iconify/react";
 import Button from "./Button";
+import { isLiked, likePost, unlikePost } from "@/entities/api/posts-actions";
+import { useEffect, useState, useCallback } from "react";
 
 const formatDate = (date: Date) => {
   const dateObj = new Date(date);
@@ -12,6 +15,43 @@ const formatDate = (date: Date) => {
 };
 
 export default function PostCard({ post }: { post: Post }) {
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(post.likes);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const checkLikeStatus = useCallback(async () => {
+    const result = await isLiked(post.id);
+    if (result.success) {
+      setLiked(result.liked || false);
+    }
+  }, [post.id]);
+
+  useEffect(() => {
+    checkLikeStatus();
+  }, [checkLikeStatus]);
+
+  async function handleLike() {
+    if (isLoading) return;
+
+    setIsLoading(true);
+
+    if (liked) {
+      const result = await unlikePost(post.id);
+      if (result.success) {
+        setLiked(false);
+        setLikeCount((prev) => Math.max(0, prev - 1));
+      }
+    } else {
+      const result = await likePost(post.id);
+      if (result.success) {
+        setLiked(true);
+        setLikeCount((prev) => prev + 1);
+      }
+    }
+
+    setIsLoading(false);
+  }
+
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-4 border border-gray-100 group cursor-pointer hover:-translate-y-1">
       <div className="flex items-start justify-between mb-3">
@@ -68,12 +108,19 @@ export default function PostCard({ post }: { post: Post }) {
       <div className="flex items-center justify-between pt-3 border-t border-gray-100">
         <div className="flex items-center space-x-3">
           <Button
+            onClick={handleLike}
             color="error"
             size="small"
-            className="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition-colors hover:scale-105"
+            disabled={isLoading}
+            className={`flex items-center space-x-1 transition-colors hover:scale-105 ${
+              liked ? "text-red-500" : "text-gray-500 hover:text-red-500"
+            } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
           >
-            <Icon icon="mdi:heart-outline" className="text-sm" />
-            <span className="text-xs font-medium">{post.likes}</span>
+            <Icon
+              icon={liked ? "mdi:heart" : "mdi:heart-outline"}
+              className="text-sm"
+            />
+            <span className="text-xs font-medium">{likeCount}</span>
           </Button>
         </div>
 
