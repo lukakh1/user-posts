@@ -2,6 +2,7 @@
 import { createClient } from "@/shared/api/supabase/server";
 import { Post } from "../models/post/postSchema";
 import { getUser } from "./user-actions";
+import { revalidatePath } from "next/cache";
 
 export async function getPosts(): Promise<{
   success: boolean;
@@ -19,7 +20,6 @@ export async function getPosts(): Promise<{
     return { success: false, message: error.message };
   }
 
-  console.log(data);
   return { success: true, data: data };
 }
 
@@ -38,10 +38,11 @@ export async function likePost(postId: number): Promise<{
     .insert({ post_id: postId, user_id: userId });
 
   if (error) {
-    console.log(error);
+    console.error(error);
     return { success: false, message: error.message };
   }
 
+  revalidatePath("/dashboard");
   return { success: true };
 }
 
@@ -62,10 +63,11 @@ export async function unlikePost(postId: number): Promise<{
     .eq("user_id", userId);
 
   if (error) {
-    console.log(error);
+    console.error(error);
     return { success: false, message: error.message };
   }
 
+  revalidatePath("/dashboard");
   return { success: true };
 }
 

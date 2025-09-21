@@ -2,8 +2,11 @@
 import { Post } from "@/entities/models/post/postSchema";
 import { Icon } from "@iconify/react";
 import Button from "./Button";
-import { isLiked, likePost, unlikePost } from "@/entities/api/posts-actions";
-import { useEffect, useState, useCallback } from "react";
+import {
+  useIsLiked,
+  useLikePost,
+  useUnlikePost,
+} from "@/shared/hooks/usePosts";
 
 const formatDate = (date: Date) => {
   const dateObj = new Date(date);
@@ -15,41 +18,23 @@ const formatDate = (date: Date) => {
 };
 
 export default function PostCard({ post }: { post: Post }) {
-  const [liked, setLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(post.likes);
-  const [isLoading, setIsLoading] = useState(false);
+  const { data: likeStatus, isLoading: isLikeStatusLoading } = useIsLiked(
+    post.id
+  );
+  const likeMutation = useLikePost();
+  const unlikeMutation = useUnlikePost();
 
-  const checkLikeStatus = useCallback(async () => {
-    const result = await isLiked(post.id);
-    if (result.success) {
-      setLiked(result.liked || false);
-    }
-  }, [post.id]);
+  const liked = likeStatus?.liked || false;
+  const isLoading = likeMutation.isPending || unlikeMutation.isPending;
 
-  useEffect(() => {
-    checkLikeStatus();
-  }, [checkLikeStatus]);
-
-  async function handleLike() {
-    if (isLoading) return;
-
-    setIsLoading(true);
+  function handleLike() {
+    if (isLoading || isLikeStatusLoading) return;
 
     if (liked) {
-      const result = await unlikePost(post.id);
-      if (result.success) {
-        setLiked(false);
-        setLikeCount((prev) => Math.max(0, prev - 1));
-      }
+      unlikeMutation.mutate(post.id);
     } else {
-      const result = await likePost(post.id);
-      if (result.success) {
-        setLiked(true);
-        setLikeCount((prev) => prev + 1);
-      }
+      likeMutation.mutate(post.id);
     }
-
-    setIsLoading(false);
   }
 
   return (
@@ -120,7 +105,7 @@ export default function PostCard({ post }: { post: Post }) {
               icon={liked ? "mdi:heart" : "mdi:heart-outline"}
               className="text-sm"
             />
-            <span className="text-xs font-medium">{likeCount}</span>
+            <span className="text-xs font-medium">{post.likes}</span>
           </Button>
         </div>
 
