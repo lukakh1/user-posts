@@ -12,10 +12,10 @@ export default function Button({
   children,
   size,
   color = "primary",
-  type = "button",
   className = "",
   disabled = false,
   onClick,
+  type,
 }: ButtonProps) {
   const sizeClasses = {
     small: "px-3 py-2 text-sm",
@@ -35,7 +35,7 @@ export default function Button({
   return (
     <button
       disabled={disabled}
-      type={type}
+      type={type ? type : "button"}
       className={`${baseClasses} ${sizeClasses[size]} ${colorClasses[color]} ${className} cursor-pointer`}
       onClick={onClick}
     >
