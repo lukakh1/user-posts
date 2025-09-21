@@ -13,6 +13,18 @@ interface SavedPostIdsState {
   setHydrated: () => void;
 }
 
+const createSafeStorage = () => {
+  if (typeof window !== "undefined") {
+    return localStorage;
+  }
+
+  return {
+    getItem: () => null,
+    setItem: () => {},
+    removeItem: () => {},
+  };
+};
+
 const useSavedPostIds = create<SavedPostIdsState>()(
   persist(
     (set, get) => ({
@@ -20,14 +32,11 @@ const useSavedPostIds = create<SavedPostIdsState>()(
       isHydrated: false,
 
       addPostToSaved: (postId: number) =>
-        set((state) => {
-          if (state.savedPostIds.includes(postId)) {
-            return state; // Don't add if already exists
-          }
-          return {
-            savedPostIds: [...state.savedPostIds, postId],
-          };
-        }),
+        set((state) => ({
+          savedPostIds: state.savedPostIds.includes(postId)
+            ? state.savedPostIds
+            : [...state.savedPostIds, postId],
+        })),
 
       removePostFromSaved: (postId: number) =>
         set((state) => ({
@@ -43,34 +52,18 @@ const useSavedPostIds = create<SavedPostIdsState>()(
         }
       },
 
-      isPostSaved: (postId: number) => {
-        return get().savedPostIds.includes(postId);
-      },
+      isPostSaved: (postId: number) => get().savedPostIds.includes(postId),
 
-      clearAllSaved: () =>
-        set(() => ({
-          savedPostIds: [],
-        })),
+      clearAllSaved: () => set({ savedPostIds: [] }),
 
-      getSavedCount: () => {
-        return get().savedPostIds.length;
-      },
+      getSavedCount: () => get().savedPostIds.length,
 
       setHydrated: () => set({ isHydrated: true }),
     }),
     {
       name: "saved-posts-storage",
       version: 1,
-      storage: createJSONStorage(() => {
-        if (typeof window !== "undefined") {
-          return localStorage;
-        }
-        return {
-          getItem: () => null,
-          setItem: () => {},
-          removeItem: () => {},
-        };
-      }),
+      storage: createJSONStorage(createSafeStorage),
       onRehydrateStorage: () => (state) => {
         state?.setHydrated();
       },
