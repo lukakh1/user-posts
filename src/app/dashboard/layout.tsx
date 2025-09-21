@@ -1,3 +1,4 @@
+import DashboardHeader from "@/features/DashboardHeader";
 import Footer from "@/features/Footer";
 import Header from "@/features/Header";
 import type { Metadata } from "next";
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <div className="w-full h-full flex flex-col">
       <Header />
+      <DashboardHeader />
       {children}
       <Footer />
     </div>

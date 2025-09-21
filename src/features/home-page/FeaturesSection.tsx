@@ -103,7 +103,6 @@ export default function FeaturesSection() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           staggerDelay={0.1}
           itemDelay={0.2}
-          direction="up"
         >
           {features.map((feature, index) => (
             <motion.div
