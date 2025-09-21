@@ -2,7 +2,7 @@
 import { createClient } from "./supabase/server";
 import { cache } from "react";
 
-export const getUser = cache(async () => {
+const getUser = cache(async () => {
   const supabase = await createClient();
 
   try {
@@ -10,9 +10,10 @@ export const getUser = cache(async () => {
       data: { user },
       error,
     } = await supabase.auth.getUser();
-    if (error) throw error;
+    if (error) return null;
     return user;
   } catch (error) {
+    console.error("Error fetching user:", error);
     return null;
   }
 });

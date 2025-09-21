@@ -39,7 +39,7 @@ export const useAuth = () => {
   function handleSuccess(data: { success: boolean; error?: string } | void) {
     if (data?.success) {
       router.push(searchParams.get("redirectTo") || "/");
-    } else {
+    } else if (data?.error) {
       setErrorMessage(
         data?.error || "Authentication failed. Please try again."
       );

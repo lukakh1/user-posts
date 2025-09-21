@@ -1,4 +1,9 @@
+"use client";
+
 import { Icon } from "@iconify/react";
+import { motion } from "framer-motion";
+import AnimatedSection from "@/shared/ui/AnimatedSection";
+import StaggeredAnimation from "@/shared/ui/StaggeredAnimation";
 
 export default function FeaturesSection() {
   const features = [
@@ -61,37 +66,75 @@ export default function FeaturesSection() {
   return (
     <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Everything You Need to
-            <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent block">
-              Stay Connected
-            </span>
-          </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Our platform offers all the tools you need to build meaningful
-            connections and share your story with the world.
-          </p>
-        </div>
+        <AnimatedSection delay={0.2} direction="up">
+          <div className="text-center mb-20">
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              Everything You Need to
+              <motion.span
+                className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent block"
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+              >
+                Stay Connected
+              </motion.span>
+            </motion.h2>
+            <motion.p
+              className="text-xl text-gray-600 max-w-3xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              viewport={{ once: true }}
+            >
+              Our platform offers all the tools you need to build meaningful
+              connections and share your story with the world.
+            </motion.p>
+          </div>
+        </AnimatedSection>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <StaggeredAnimation
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          staggerDelay={0.1}
+          itemDelay={0.2}
+          direction="up"
+        >
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
               className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-all duration-300 hover:transform hover:scale-105 group"
+              whileHover={{
+                scale: 1.05,
+                y: -5,
+                transition: { duration: 0.2 },
+              }}
+              whileTap={{ scale: 0.95 }}
             >
-              <div className="mb-6 transform group-hover:scale-110 transition-transform duration-200">
+              <motion.div
+                className="mb-6 transform group-hover:scale-110 transition-transform duration-200"
+                whileHover={{
+                  scale: 1.1,
+                  rotate: 5,
+                  transition: { duration: 0.2 },
+                }}
+              >
                 {feature.icon}
-              </div>
+              </motion.div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4">
                 {feature.title}
               </h3>
               <p className="text-gray-600 leading-relaxed">
                 {feature.description}
               </p>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </StaggeredAnimation>
       </div>
     </section>
   );

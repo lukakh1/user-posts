@@ -57,7 +57,6 @@ export default function CustomLink({
     "rounded-lg font-medium transition-all duration-200 text-center no-underline disabled:opacity-50 disabled:cursor-not-allowed";
 
   const linkClasses = `${baseClasses} ${sizeClasses[size]} ${colorClasses[color][variant]} ${className}`;
-  console.log(linkClasses);
   if (disabled) {
     return (
       <span

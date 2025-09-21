@@ -1,37 +1,34 @@
+import { PublicUser } from "@/entities/models/public-user/publicUserSchem";
 import { getPublicUser } from "@/shared/api/user-actions";
 import CustomLink from "@/shared/ui/CustomLink";
 import { Icon } from "@iconify/react";
 
+const getUserDisplayInfo = (user: PublicUser) => {
+  if (!user) return null;
+
+  const hasName = user.name && user.name.trim() !== "";
+  const hasNick = user.nick && user.nick.trim() !== "";
+
+  if (hasName) {
+    return {
+      displayName: user.name,
+      showName: true,
+    };
+  } else if (hasNick) {
+    return {
+      displayName: user.nick,
+      showName: true,
+    };
+  } else {
+    return {
+      displayName: null,
+      showName: false,
+    };
+  }
+};
+
 export default async function Header() {
   const user = await getPublicUser();
-
-  const getUserDisplayInfo = (user: {
-    id: string;
-    name?: string;
-    nick?: string;
-  }) => {
-    if (!user) return null;
-
-    const hasName = user.name && user.name.trim() !== "";
-    const hasNick = user.nick && user.nick.trim() !== "";
-
-    if (hasName) {
-      return {
-        displayName: user.name,
-        showName: true,
-      };
-    } else if (hasNick) {
-      return {
-        displayName: user.nick,
-        showName: true,
-      };
-    } else {
-      return {
-        displayName: null,
-        showName: false,
-      };
-    }
-  };
 
   const userDisplayInfo = getUserDisplayInfo(user);
 
@@ -39,17 +36,15 @@ export default async function Header() {
     <header className="bg-white shadow-sm border-b sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo Section */}
-          <div className="flex items-center">
+          <CustomLink variant="ghost" href="/" className="flex items-center">
             <div className="bg-gradient-to-r from-purple-600 to-pink-600 p-2 rounded-lg">
               <Icon icon="mdi:account-group" className="h-8 w-8 text-white" />
             </div>
             <span className="ml-3 text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               SocialHub
             </span>
-          </div>
+          </CustomLink>
 
-          {/* Guest User Navigation */}
           {!user && (
             <div className="flex items-center space-x-4">
               <CustomLink
@@ -66,14 +61,13 @@ export default async function Header() {
                 variant="solid"
                 color="primary"
                 size="medium"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-lg transform hover:scale-105 font-medium"
+                className="bg-gradient-to-r from-purple-600 to-pink-600 text-white transform hover:scale-105"
               >
                 Sign Up
               </CustomLink>
             </div>
           )}
 
-          {/* Authenticated User Navigation */}
           {user && (
             <div className="flex items-center space-x-2">
               <CustomLink
