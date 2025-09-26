@@ -1,5 +1,5 @@
-import { Post } from "@/entities/models/post/postSchema";
-import PostCard from "@/shared/ui/PostCard";
+import { type Post } from "@/entities";
+import { PostCard } from "@/entities";
 import { Icon } from "@iconify/react";
 
 export default function Posts({ posts }: { posts: Post[] }) {

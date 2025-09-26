@@ -1,6 +1,6 @@
 "use client";
 
-import CustomLink from "@/shared/ui/CustomLink";
+import {CustomLink} from "@/shared/ui";
 import { usePathname } from "next/navigation";
 
 export default function DashboardHeader() {

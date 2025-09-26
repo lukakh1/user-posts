@@ -1,14 +1,7 @@
-// hooks/useAuth.ts
 import { useMutation } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import {
-  signInWithEmail,
-  signInWithGmail,
-  signUpNewUser,
-} from "@/entities/api/auth-actions";
-import type { LoginInputs } from "@/entities/models/login/loginSchema";
-import type { SignupInputs } from "@/entities/models/signup/signupSchema";
+import { type SignupInputs, type LoginInputs, authActions } from "@/entities";
 
 type AuthType = "signin" | "signup" | "google";
 type AuthData = LoginInputs | SignupInputs;
@@ -19,19 +12,19 @@ export const useAuth = () => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const signInMutation = useMutation({
-    mutationFn: signInWithEmail,
+    mutationFn: authActions.signInWithEmail,
     onSuccess: handleSuccess,
     onError: handleError,
   });
 
   const signUpMutation = useMutation({
-    mutationFn: signUpNewUser,
+    mutationFn: authActions.signUpNewUser,
     onSuccess: handleSuccess,
     onError: handleError,
   });
 
   const googleSignInMutation = useMutation({
-    mutationFn: signInWithGmail,
+    mutationFn: authActions.signInWithGmail,
     onSuccess: handleSuccess,
     onError: handleError,
   });

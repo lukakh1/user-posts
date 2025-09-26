@@ -2,8 +2,8 @@
 
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
-import AnimatedSection from "@/shared/ui/AnimatedSection";
-import StaggeredAnimation from "@/shared/ui/StaggeredAnimation";
+import {AnimatedSection} from "@/shared/ui";
+import {StaggeredAnimation} from "@/shared/ui";
 
 export default function FeaturesSection() {
   const features = [

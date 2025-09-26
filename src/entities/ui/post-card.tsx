@@ -1,13 +1,13 @@
 "use client";
-import { Post } from "@/entities/models/post/postSchema";
+import { type Post } from "@/entities";
 import { Icon } from "@iconify/react";
-import Button from "./Button";
+import { Button } from "@/shared/ui";
 import {
   useIsLiked,
   useLikePost,
   useUnlikePost,
-} from "@/shared/hooks/usePosts";
-import useSavedPostIds from "../store/savedPosts.store";
+} from "@/shared/hooks";
+import {useSavedPostIds} from "@/shared/store";
 
 export default function PostCard({ post }: { post: Post }) {
   const formatDate = (date: Date) => {

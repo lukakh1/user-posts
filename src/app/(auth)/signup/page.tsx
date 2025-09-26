@@ -1,8 +1,8 @@
 "use client";
 
-import SignupForm from "@/features/signup-form/signupForm";
-import CustomLink from "@/shared/ui/CustomLink";
-import H1 from "@/shared/ui/H1";
+import {SignupForm} from "@/features";
+import {CustomLink} from "@/shared/ui";
+import {H1} from "@/shared/ui";
 import { motion } from "framer-motion";
 
 export default function SignupPage() {

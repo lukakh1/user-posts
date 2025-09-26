@@ -1,6 +1,5 @@
-import { PublicUser } from "@/entities/models/public-user/publicUserSchem";
-import { getPublicUser } from "@/entities/api/user-actions";
-import CustomLink from "@/shared/ui/CustomLink";
+import { userActions, type PublicUser } from "@/entities";
+import {CustomLink} from "@/shared/ui";
 import { Icon } from "@iconify/react";
 
 const getUserDisplayInfo = (user: PublicUser) => {
@@ -28,7 +27,7 @@ const getUserDisplayInfo = (user: PublicUser) => {
 };
 
 export default async function Header() {
-  const user = await getPublicUser();
+  const user = await userActions.getPublicUser();
 
   const userDisplayInfo = getUserDisplayInfo(user);
 

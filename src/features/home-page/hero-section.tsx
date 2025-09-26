@@ -1,7 +1,7 @@
 "use client";
 
-import CustomLink from "@/shared/ui/CustomLink";
-import AnimatedSection from "@/shared/ui/AnimatedSection";
+import {CustomLink} from "@/shared/ui";
+import {AnimatedSection} from "@/shared/ui";
 import { motion } from "framer-motion";
 
 export default function HeroSection() {

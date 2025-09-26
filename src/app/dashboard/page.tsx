@@ -1,9 +1,11 @@
-import { getPosts } from "@/entities/api/posts-actions";
-import Posts from "@/features/post-page/Posts";
-import H1 from "@/shared/ui/H1";
+import { postActions } from "@/entities";
+import {Posts} from "@/features";
+import {H1} from "@/shared/ui";
+
 
 export default async function DashboardPage() {
-  const posts = await getPosts();
+  
+  const posts = await postActions.getPosts();
   return (
     <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-6 animate-fade-in flex flex-col w-full items-center">

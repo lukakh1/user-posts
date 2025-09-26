@@ -1,6 +1,6 @@
-import DashboardHeader from "@/features/DashboardHeader";
-import Footer from "@/features/Footer";
-import Header from "@/features/Header";
+import {DashboardHeader} from "@/features";
+import Footer from "@/features/footer";
+import {Header} from "@/features";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

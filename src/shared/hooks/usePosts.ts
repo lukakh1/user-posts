@@ -1,5 +1,5 @@
+import { postActions } from "@/entities";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { isLiked, likePost, unlikePost } from "@/entities/api/posts-actions";
 
 export const postKeys = {
   all: ["posts"] as const,
@@ -7,9 +7,10 @@ export const postKeys = {
 };
 
 export function useIsLiked(postId: number) {
+  
   return useQuery({
     queryKey: postKeys.likes(postId),
-    queryFn: () => isLiked(postId),
+    queryFn: () => postActions.isLiked(postId),
     enabled: !!postId,
     staleTime: 1000 * 60 * 5,
   });
@@ -19,7 +20,7 @@ export function useLikePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: likePost,
+    mutationFn: postActions.likePost,
     onSuccess: (_, postId) => {
       queryClient.setQueryData(postKeys.likes(postId), {
         success: true,
@@ -38,7 +39,7 @@ export function useUnlikePost() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: unlikePost,
+    mutationFn: postActions.unlikePost,
     onSuccess: (_, postId) => {
       queryClient.setQueryData(postKeys.likes(postId), {
         success: true,

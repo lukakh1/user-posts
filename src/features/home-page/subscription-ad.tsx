@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/shared/ui/Button";
+import { Button } from "@/shared/ui";
 import { Icon } from "@iconify/react";
 import { motion } from "framer-motion";
 
