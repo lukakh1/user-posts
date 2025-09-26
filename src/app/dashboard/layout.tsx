@@ -1,5 +1,6 @@
-import Footer from "@/features/Footer";
-import Header from "@/features/Header";
+import {DashboardHeader} from "@/features";
+import Footer from "@/features/footer";
+import {Header} from "@/features";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -12,8 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full h-full flex flex-col min-h-screen">
       <Header />
+      <DashboardHeader />
       {children}
       <Footer />
     </div>

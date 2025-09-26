@@ -1,6 +1,5 @@
 "use client";
-
-import CustomLink from "@/shared/ui/CustomLink";
+import {CustomLink} from "@/shared/ui";
 import { motion } from "framer-motion";
 
 export default function CallToActionSection() {

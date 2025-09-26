@@ -1,26 +1,23 @@
 "use client";
-import {
-  SignupInputs,
-  SignupSchema,
-} from "@/entities/models/signup/signupSchema";
-import { GoogleSvg } from "@/shared/assets/google_svg";
-import { useAuth } from "@/shared/hooks/useAuth";
-import Button from "@/shared/ui/Button";
+import { GoogleSvg } from "@/shared/assets";
+import { useAuth } from "@/shared/hooks";
+import { Button } from "@/shared/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { motion } from "framer-motion";
+import { type LoginInputs, LoginSchema } from "@/entities";
 
-export default function SignupForm() {
+export default function LoginForm() {
   const { authenticate, errorMessage, isLoading } = useAuth();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignupInputs>({ resolver: zodResolver(SignupSchema) });
+  } = useForm<LoginInputs>({ resolver: zodResolver(LoginSchema) });
 
-  const onSubmit: SubmitHandler<SignupInputs> = (data) => {
-    authenticate("signup", data);
+  const onSubmit: SubmitHandler<LoginInputs> = (data) => {
+    authenticate("signin", data);
   };
 
   const handleGmailLogin = () => {
@@ -140,38 +137,9 @@ export default function SignupForm() {
       </motion.div>
 
       <motion.div
-        className="space-y-1"
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.6, delay: 0.5 }}
-      >
-        <label htmlFor="reppassword" className="text-slate-200 font-medium">
-          Repeat password
-        </label>
-        <motion.input
-          id="reppassword"
-          className="w-full px-4 py-3 rounded-lg bg-slate-800 text-slate-100 border border-slate-700 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-400/20 transition-all"
-          type="password"
-          {...register("reppassword", { required: true })}
-          whileFocus={{ scale: 1.02 }}
-          transition={{ duration: 0.2 }}
-        />
-        {errors.reppassword && (
-          <motion.span
-            className="text-red-300 text-sm block mt-1"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {errors.reppassword.message}
-          </motion.span>
-        )}
-      </motion.div>
-
-      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.6 }}
+        transition={{ duration: 0.6, delay: 0.5 }}
       >
         <Button
           className="w-full mt-6 hover:bg-blue-300 transition-colors"
@@ -185,10 +153,10 @@ export default function SignupForm() {
               animate={{ opacity: [0.5, 1, 0.5] }}
               transition={{ duration: 1, repeat: Infinity }}
             >
-              Signing Up...
+              Signing In...
             </motion.span>
           ) : (
-            "Sign Up"
+            "Sign In"
           )}
         </Button>
       </motion.div>

@@ -49,7 +49,7 @@ export default function CustomLink({
       solid: "bg-purple-800 text-white hover:bg-purple-600",
       outline:
         "border-2 border-purple-800 text-purple-200 hover:bg-purple-800 hover:text-purple-100",
-      ghost: "text-purple-5800 hover:bg-purple-200",
+      ghost: "text-purple-800 hover:bg-purple-200",
     },
   };
 
